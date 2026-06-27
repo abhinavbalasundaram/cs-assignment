@@ -19,3 +19,11 @@ Use local Terraform state during the initial implementation.
 
 Reason:
 This is a personal take-home assignment and the project is being developed by one person. Local state avoids adding backend bootstrap complexity. In a team or production setup, the Terraform state should be stored remotely in a GCS bucket with appropriate IAM controls.
+
+### 003 - Do not use Shared VPC
+
+Decision:
+Do not use Shared VPC for this assignment. The project will use a VPC created directly inside the same GCP project.
+
+Reason:
+Shared VPC is useful in larger organizations where a central networking team owns a host project and application teams deploy resources into separate service projects. For this take-home assignment, we are using a single GCP project, so Shared VPC would add unnecessary complexity without improving the required deliverables.
