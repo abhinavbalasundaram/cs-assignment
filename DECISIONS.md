@@ -43,3 +43,11 @@ Use zonal GKE clusters instead of regional GKE clusters.
 
 Reason:
 In regional GKE clusters, node count is applied per zone. A node pool with `node_count = 1` can create one node in each zone, resulting in three nodes per cluster in a typical region. For this take-home assignment, one node per cluster is sufficient to demonstrate the required architecture while keeping cost low.
+
+### 006 - Use Kubernetes YAML and kubectl for application deployment
+
+Decision:
+Define Kubernetes workloads using YAML manifests and apply them using kubectl instead of managing them through the Terraform Kubernetes provider.
+
+Reason:
+Terraform is used to provision GCP infrastructure such as VPC, Cloud NAT, GKE clusters, and node pools. Kubernetes manifests are used for application deployment. This keeps infrastructure provisioning and workload deployment clearly separated.
