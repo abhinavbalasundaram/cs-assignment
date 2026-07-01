@@ -15,6 +15,18 @@ variable "secondary_region" {
   default     = "us-east1"
 }
 
+variable "primary_zone" {
+  description = "Primary GCP zone for the first GKE cluster."
+  type        = string
+  default     = "us-central1-a"
+}
+
+variable "secondary_zone" {
+  description = "Secondary GCP zone for the second GKE cluster."
+  type        = string
+  default     = "us-east1-b"
+}
+
 variable "name_prefix" {
   description = "Prefix used for naming project resources."
   type        = string

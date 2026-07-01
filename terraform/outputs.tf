@@ -52,3 +52,33 @@ output "secondary_gke_service_range" {
   description = "Secondary range used for secondary cluster Services."
   value       = "secondary-services"
 }
+
+output "primary_cluster_name" {
+  description = "Name of the primary GKE cluster."
+  value       = google_container_cluster.primary.name
+}
+
+output "secondary_cluster_name" {
+  description = "Name of the secondary GKE cluster."
+  value       = google_container_cluster.secondary.name
+}
+
+output "primary_cluster_region" {
+  description = "Region of the primary GKE cluster."
+  value       = google_container_cluster.primary.location
+}
+
+output "secondary_cluster_region" {
+  description = "Region of the secondary GKE cluster."
+  value       = google_container_cluster.secondary.location
+}
+
+output "primary_get_credentials_command" {
+  description = "Command to configure kubectl for the primary cluster."
+  value       = "gcloud container clusters get-credentials ${google_container_cluster.primary.name} --region ${google_container_cluster.primary.location} --project ${var.project_id}"
+}
+
+output "secondary_get_credentials_command" {
+  description = "Command to configure kubectl for the secondary cluster."
+  value       = "gcloud container clusters get-credentials ${google_container_cluster.secondary.name} --region ${google_container_cluster.secondary.location} --project ${var.project_id}"
+}
