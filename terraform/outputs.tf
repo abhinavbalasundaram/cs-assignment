@@ -87,3 +87,18 @@ output "app_global_ip" {
   description = "Global static IP for the external application endpoint."
   value       = google_compute_global_address.app.address
 }
+
+output "bigquery_logs_dataset" {
+  description = "BigQuery dataset used for exported logs."
+  value       = google_bigquery_dataset.logs.dataset_id
+}
+
+output "logging_sink_name" {
+  description = "Cloud Logging sink exporting logs to BigQuery."
+  value       = google_logging_project_sink.gke_logs_to_bigquery.name
+}
+
+output "logging_sink_writer_identity" {
+  description = "Service account used by the log sink to write to BigQuery."
+  value       = google_logging_project_sink.gke_logs_to_bigquery.writer_identity
+}
