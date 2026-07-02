@@ -6,6 +6,9 @@ locals {
     "logging.googleapis.com",
     "monitoring.googleapis.com",
     "bigquery.googleapis.com",
+    "gkehub.googleapis.com",
+    "multiclusteringress.googleapis.com",
+    "multiclusterservicediscovery.googleapis.com"
   ]
 }
 

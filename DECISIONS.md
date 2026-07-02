@@ -51,3 +51,11 @@ Define Kubernetes workloads using YAML manifests and apply them using kubectl in
 
 Reason:
 Terraform is used to provision GCP infrastructure such as VPC, Cloud NAT, GKE clusters, and node pools. Kubernetes manifests are used for application deployment. This keeps infrastructure provisioning and workload deployment clearly separated.
+
+### 007 - Use GKE Multi Cluster Ingress instead of NGINX Ingress
+
+Decision:
+Use GKE Multi Cluster Ingress for the external customer endpoint instead of deploying NGINX Ingress.
+
+Reason:
+The assignment asks for global load balancing, NEGs, multi-cluster routing, and failover across clusters. GKE Multi Cluster Ingress is the native GCP feature for this pattern. Adding NGINX would introduce an extra in-cluster proxy layer without being necessary for the required flow.

@@ -80,3 +80,11 @@ resource "google_compute_router_nat" "secondary" {
     source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
   }
 }
+
+resource "google_compute_global_address" "app" {
+  name = "app-global-ip"
+
+  depends_on = [
+    google_project_service.required_apis
+  ]
+}

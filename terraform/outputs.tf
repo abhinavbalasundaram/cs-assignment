@@ -82,3 +82,8 @@ output "secondary_get_credentials_command" {
   description = "Command to configure kubectl for the secondary cluster."
   value       = "gcloud container clusters get-credentials ${google_container_cluster.secondary.name} --region ${google_container_cluster.secondary.location} --project ${var.project_id}"
 }
+
+output "app_global_ip" {
+  description = "Global static IP for the external application endpoint."
+  value       = google_compute_global_address.app.address
+}

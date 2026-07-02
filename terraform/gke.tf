@@ -55,6 +55,10 @@ resource "google_container_cluster" "primary" {
     master_ipv4_cidr_block  = "172.16.0.0/28"
   }
 
+  fleet {
+    project = var.project_id
+  }
+
   depends_on = [
     google_compute_subnetwork.primary_gke
   ]
@@ -118,6 +122,10 @@ resource "google_container_cluster" "secondary" {
     enable_private_nodes    = true
     enable_private_endpoint = false
     master_ipv4_cidr_block  = "172.16.1.0/28"
+  }
+
+  fleet {
+    project = var.project_id
   }
 
   depends_on = [
