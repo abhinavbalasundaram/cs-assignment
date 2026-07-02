@@ -8,7 +8,8 @@ locals {
     "bigquery.googleapis.com",
     "gkehub.googleapis.com",
     "multiclusteringress.googleapis.com",
-    "multiclusterservicediscovery.googleapis.com"
+    "multiclusterservicediscovery.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
   ]
 }
 

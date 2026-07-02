@@ -1,39 +1,37 @@
 SELECT
-  timestamp,
-  httpRequest.requestMethod AS method,
-  httpRequest.requestUrl AS url,
-  httpRequest.status AS status,
-  httpRequest.latency AS latency,
-  resource.labels.backend_service_name AS backend_service
+  TIMESTAMP_TRUNC(timestamp, MINUTE) AS time,
+  COUNTIF(httpRequest.status >= 500) AS error_count,
+  COUNT(*) AS total_request_count,
+  SAFE_DIVIDE(COUNTIF(httpRequest.status >= 500), COUNT(*)) * 100 AS error_rate_percent
 FROM
-  `PROJECT_ID.gke_logs.HTTP_LOAD_BALANCER_TABLE`
-ORDER BY
-  timestamp DESC
-LIMIT 50;
-
-SELECT
-  REGEXP_EXTRACT(httpRequest.requestUrl, r'http://[^/]+(/[^?]*)') AS path,
-  COUNT(*) AS request_count
-FROM
-  `PROJECT_ID.gke_logs.HTTP_LOAD_BALANCER_TABLE`
+  `PROJECT_ID.gke_logs.HTTP_REQUESTS_TABLE`
 WHERE
-  timestamp >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR)
+  $__timeFilter(timestamp)
 GROUP BY
-  path
+  time
 ORDER BY
-  request_count DESC;
+  time;
 
 SELECT
-  timestamp,
-  resource.labels.cluster_name AS cluster_name,
-  resource.labels.namespace_name AS namespace_name,
-  resource.labels.pod_name AS pod_name,
-  resource.labels.container_name AS container_name,
-  textPayload
+  TIMESTAMP_TRUNC(timestamp, MINUTE) AS time,
+  APPROX_QUANTILES(
+    CAST(REGEXP_EXTRACT(CAST(httpRequest.latency AS STRING), r'([0-9.]+)') AS FLOAT64),
+    100
+  )[OFFSET(50)] AS p50_latency_seconds,
+  APPROX_QUANTILES(
+    CAST(REGEXP_EXTRACT(CAST(httpRequest.latency AS STRING), r'([0-9.]+)') AS FLOAT64),
+    100
+  )[OFFSET(95)] AS p95_latency_seconds,
+  APPROX_QUANTILES(
+    CAST(REGEXP_EXTRACT(CAST(httpRequest.latency AS STRING), r'([0-9.]+)') AS FLOAT64),
+    100
+  )[OFFSET(99)] AS p99_latency_seconds
 FROM
-  `PROJECT_ID.gke_logs.K8S_CONTAINER_TABLE`
+  `PROJECT_ID.gke_logs.HTTP_REQUESTS_TABLE`
 WHERE
-  resource.labels.namespace_name = "web"
+  $__timeFilter(timestamp)
+  AND httpRequest.latency IS NOT NULL
+GROUP BY
+  time
 ORDER BY
-  timestamp DESC
-LIMIT 50;
+  time;

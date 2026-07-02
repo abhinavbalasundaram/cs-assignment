@@ -15,3 +15,6 @@ kubeconfig*
 
 # IDE
 .vscode/
+
+grafana-bigquery-key.json
+*.json
