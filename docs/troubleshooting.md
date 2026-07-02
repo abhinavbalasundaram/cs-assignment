@@ -94,7 +94,3 @@ curl http://<GLOBAL_IP>/app-b
 ```
 
 The endpoint started responding correctly after the MultiClusterIngress and global load balancer finished reconciling.
-
-## Lesson Learned
-
-MultiClusterIngress depends on several resources being correct at the same time: the default backend, MultiClusterService objects, global static IP configuration, backend health, URL map, and forwarding rule. Even after the backend services are healthy, the global load balancer frontend may still need time to reconcile. Checking the MultiClusterIngress events and Google Cloud load balancer resources helped isolate the issue layer by layer.
